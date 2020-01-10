@@ -1,9 +1,17 @@
-/**
- * @format
- */
+import { registerScreens } from './screens'
+import { Navigation } from 'react-native-navigation'
+import React from 'react'
 
-import {AppRegistry} from 'react-native';
-import App from './App.tsx';
-import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+
+registerScreens()
+
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      component: {
+        name: "LoginPage"
+      }
+    }
+  });
+});
