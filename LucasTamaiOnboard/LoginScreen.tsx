@@ -1,7 +1,7 @@
 //Login Screen from STEP 3/9 
 import React, { Component } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native"
-import {validateLogin, doLogin,storeToken} from "./LoginValidator"
+import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native"
+import {validateLogin, doLogin,storeToken, changePage} from "./LoginValidator"
 import { Navigation } from 'react-native-navigation'
 
 interface LoginPageState {
@@ -24,51 +24,58 @@ export default class LoginPage extends Component<{}, LoginPageState> {
     
     render(){
         return(
-                <View style={Styles.container}>
-                    <Text style={Styles.Header}> Bem vindo(a) à Taqtile </Text>
-                    <Text style={Styles.inputHeader}>E-mail</Text>
-                    <TextInput style={Styles.input}
-                        underlineColorAndroid = "transparent"
-                        placeholder = "Email"
-                        placeholderTextColor = "#9a73ef"
-                        autoCapitalize = "none"
-                        onChangeText = {this.handleEmail}
+            <View style={Styles.container}>
+                <Text style={Styles.Header}> Bem vindo(a) à Taqtile </Text>
+                <Text style={Styles.inputHeader}>E-mail</Text>
+                <TextInput style={Styles.input}
+                    underlineColorAndroid = "transparent"
+                    placeholder = "Email"
+                    placeholderTextColor = "#9a73ef"
+                    autoCapitalize = "none"
+                    onChangeText = {this.handleEmail}
 
-                    />
-                    <Text style={Styles.inputHeader}>Senha</Text>
-                    <TextInput style = {Styles.input}
-                        underlineColorAndroid = "transparent"
-                        placeholder = "Password"
-                        placeholderTextColor = "#9a73ef"
-                        autoCapitalize = "none"
-                        onChangeText = {this.handlePassword}
-                    />
-                    <TouchableOpacity 
-                        style = {validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
-                        disabled = {!validateLogin(this.state.email, this.state.password)}
-                        onPress = {() => {
-                            this.Loading()
-                            doLogin(this.state.email,this.state.password)
-                        }}
-                    >
-                    <Text style={Styles.submitButtonText}>Entrar</Text>
-                    </TouchableOpacity>
-                    <ActivityIndicator color="#0000ff"
-                     animating = {this.state.loading}/>
-                </View>
+                />
+                <Text style={Styles.inputHeader}>Senha</Text>
+                <TextInput style = {Styles.input}
+                    underlineColorAndroid = "transparent"
+                    placeholder = "Password"
+                    placeholderTextColor = "#9a73ef"
+                    autoCapitalize = "none"
+                    onChangeText = {this.handlePassword}
+                />
+                <TouchableOpacity 
+                    style = {validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
+                    disabled = {!validateLogin(this.state.email, this.state.password)}
+                    onPress = {this.handlePressButton}
+                >
+                <Text style={Styles.submitButtonText}>Entrar</Text>
+                </TouchableOpacity>
+                <ActivityIndicator color="#0000ff"
+                    animating = {this.state.loading}/>
+            </View>
         )
     }
 
-    private handleEmail = (Email:string) => {
-        this.setState({ email: Email })
+    private handleEmail = (email:string) => {
+        this.setState({ email: email })
     }
 
-    private handlePassword = (Password:string) => {
-        this.setState({ password: Password })
+    private handlePassword = (password:string) => {
+        this.setState({ password: password })
     }
 
-    private Loading = () => {
-        this.setState({loading: !this.state.loading})
+    private handlePressButton = async () => {
+        this.setState({ loading: true })
+        try{
+            const result = await doLogin(this.state.email,this.state.password)
+            storeToken("token",result)
+            changePage()
+        }
+        catch(error){
+            Alert.alert(error.message)
+        }
+        this.setState({ loading: false })
+
     }
 
 }
