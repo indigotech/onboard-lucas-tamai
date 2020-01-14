@@ -19,14 +19,14 @@ export async function getUsers(offset:number){
         `
 
     if(token){
-        const context = setHeader(token)
+        const context = getContext(token)
         const result = await client.query({query:query, context:context})
         return(result.data.Users.nodes)
 
     }
 }
     
-function setHeader(token:string){
+function getContext(token:string){
     return {
         headers: {
           authorization: `${token}`,

@@ -139,4 +139,5 @@ const Styles = StyleSheet.create({
     color: 'white',
     textAlign: "center",
  }
-});
+})
+
