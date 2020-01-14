@@ -1,4 +1,3 @@
-import React, { Component } from "react"
 import { gql } from '@apollo/client';
 import { Navigation } from "react-native-navigation";
 import UserListScreen from "./UserListScreen";
@@ -10,9 +9,6 @@ export function validateLogin(email:string, password:string) {
     const expressionPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
     if (expressionEmail.test(email.toLowerCase()) && expressionPassword.test(password.toLowerCase())) {
         return(true)
-    }
-    else {
-        return(false)
     }
 }
 
@@ -29,17 +25,14 @@ export async function doLogin(email:string,password:string): Promise<string>{
             }
         }  
     `})
-    
+    storeToken("token",result.data.Login.token)
     return(result.data.Login.token)
 }
     
-export const storeToken = async (key:string, token:string) => {
+const storeToken = async (key:string, token:string) => {
     try{
         await AsyncStorage.setItem(key,token)        
     }
     catch(error){}
 
-}
-export function changePage(){
-    Navigation.setRoot({root: {component: {name: "UserListScreen"} } })
 }

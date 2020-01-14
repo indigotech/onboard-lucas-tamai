@@ -1,8 +1,9 @@
 //Login Screen from STEP 3/9 
 import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native"
-import {validateLogin, doLogin,storeToken, changePage} from "./LoginValidator"
+import { doLogin } from "./LoginValidator"
 import { Navigation } from 'react-native-navigation'
+import {validateLogin} from './LocalUserValidator'
 
 interface LoginPageState {
     email: string;
@@ -67,15 +68,28 @@ export default class LoginPage extends Component<{}, LoginPageState> {
     private handlePressButton = async () => {
         this.setState({ loading: true })
         try{
-            const result = await doLogin(this.state.email,this.state.password)
-            storeToken("token",result)
-            changePage()
+            await doLogin(this.state.email,this.state.password)
+            this.changePage()
         }
         catch(error){
             Alert.alert(error.message)
         }
         this.setState({ loading: false })
 
+    }
+
+    private changePage(){
+        Navigation.setRoot({root:  {
+            stack:{
+                id: "stackMain",
+                children:[
+                    {
+                        component: {
+                            name: "UserListScreen"
+                        }
+                    }]
+                 }}}
+                )
     }
 
 }
