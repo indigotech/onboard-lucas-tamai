@@ -8,7 +8,7 @@ export async function getUsers(offset:number){
 
     const query =  gql`
         query getUsers{
-            Users(offset:${offset}){
+            Users(offset:${offset},limit: 10){
             nodes{
                 id,
                 name,
