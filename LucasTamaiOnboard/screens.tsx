@@ -1,7 +1,7 @@
 import { Navigation } from 'react-native-navigation';
 import LoginPage from './LoginScreen';
-import UserListScreen from './UserListScreen';
-import React from 'react';
+import {UserListScreen} from './UserListScreen';
+
 
 export function registerScreens() {
 	Navigation.registerComponent('LoginPage', () => LoginPage);
