@@ -1,37 +1,32 @@
 //Login Screen from STEP 3/9 
-import React, {Component} from "react"
-import { Button, StyleSheet, Text, View, TextInput, TouchableOpacity } from "react-native"
+import React, { Component } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native"
+import { doLogin } from "./LoginValidator"
+import { Navigation } from 'react-native-navigation'
+import {validateLogin} from './LocalUserValidator'
 
+interface LoginPageState {
+    email: string;
+    password: string;
+    loading: boolean 
+  }
 
+export default class LoginPage extends Component<{}, LoginPageState> {
+    constructor(props){
+        super(props)
+        Navigation.events().bindComponent(this);
+        this.state = {
+            email: "",
+            password: "",
+            loading: false
 
-export default class Login extends Component{
-    state = {
-        email: '',
-        password: ''
-     }
-
-     handleEmail = (text:String) => {
-        this.setState({ email: text })
-     }
-
-     handlePassword = (text) => {
-        this.setState({ password: text })
-     }
-
-    validateLogin = (email:String, password:String) => {
-        const expressionEmail = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
-        const expressionPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-        if(expressionEmail.test(email.toLowerCase()) && expressionPassword.test(password.toLowerCase())){
-            return(alert("Login efetuado"))
         }
-        else return(alert("Erro ao logar"))
     }
     
     render(){
         return(
             <View style={Styles.container}>
                 <Text style={Styles.Header}> Bem vindo(a) à Taqtile </Text>
-
                 <Text style={Styles.inputHeader}>E-mail</Text>
                 <TextInput style={Styles.input}
                     underlineColorAndroid = "transparent"
@@ -39,8 +34,8 @@ export default class Login extends Component{
                     placeholderTextColor = "#9a73ef"
                     autoCapitalize = "none"
                     onChangeText = {this.handleEmail}
-                />
 
+                />
                 <Text style={Styles.inputHeader}>Senha</Text>
                 <TextInput style = {Styles.input}
                     underlineColorAndroid = "transparent"
@@ -49,21 +44,56 @@ export default class Login extends Component{
                     autoCapitalize = "none"
                     onChangeText = {this.handlePassword}
                 />
-
                 <TouchableOpacity 
-                    style = {Styles.submitButton}
-                    onPress = {() => this.validateLogin(this.state.email, this.state.password)}
-                    >
-                    <Text style={Styles.submitButtonText}>Entrar</Text>
+                    style = {validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
+                    disabled = {!validateLogin(this.state.email, this.state.password)}
+                    onPress = {this.handlePressButton}
+                >
+                <Text style={Styles.submitButtonText}>Entrar</Text>
                 </TouchableOpacity>
-
-
+                <ActivityIndicator color="#0000ff"
+                    animating = {this.state.loading}/>
             </View>
         )
     }
 
+    private handleEmail = (email:string) => {
+        this.setState({ email: email })
+    }
+
+    private handlePassword = (password:string) => {
+        this.setState({ password: password })
+    }
+
+    private handlePressButton = async () => {
+        this.setState({ loading: true })
+        try{
+            await doLogin(this.state.email,this.state.password)
+            this.changePage()
+        }
+        catch(error){
+            Alert.alert(error.message)
+        }
+        this.setState({ loading: false })
+
+    }
+
+    private changePage(){
+        Navigation.setRoot({root:  {
+            stack:{
+                id: "stackMain",
+                children:[
+                    {
+                        component: {
+                            name: "UserListScreen"
+                        }
+                    }]
+                 }}}
+                )
+    }
 
 }
+
 
 const Styles = StyleSheet.create({ 
     container: {
@@ -87,22 +117,27 @@ const Styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6
  },
- submitButton: {
+ enabledSubmitButton: {
     backgroundColor: '#7a42f4',
     padding: 10,
     marginTop: 40,
     marginBottom: 15,
     marginHorizontal: 15,
     height: 40,    
-    borderRadius: 6
-
-
+    borderRadius: 6,
+ },
+ disabledSubmitButton:{
+    backgroundColor: '#d3d3d3',
+    padding: 10,
+    marginTop: 40,
+    marginBottom: 15,
+    marginHorizontal: 15,
+    height: 40,    
+    borderRadius: 6,
  },
  submitButtonText:{
     color: 'white',
     textAlign: "center",
  }
 })
-
-
 

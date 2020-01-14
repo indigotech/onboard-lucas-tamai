@@ -1,2 +1,0 @@
-# onboard-lucas-tamai
- aaa
