@@ -161,7 +161,6 @@
 				AA844DBF2652751A0B5BE15C /* Pods-LucasTamaiOnboardTests.debug.xcconfig */,
 				E2F4499A7D1570FB80E96323 /* Pods-LucasTamaiOnboardTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -308,6 +307,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
