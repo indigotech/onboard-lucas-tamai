@@ -28,22 +28,23 @@ function Item({id, name, email}) {
 
 
 export const UserListScreen = () => {
+    const usersPerPage: number = 10
+    const [data, setData] = React.useState<item[]>();
+    const [offset, setOffset] = React.useState(0);
 
-    const [data,SetData] = React.useState<item[]>();
-    const [offset,SetOffset] = React.useState(10);
-
-    const changeOffset = async () => {
-      SetOffset(offset+10)
-      await getData()
-  }
-
-    async function getData(){
-        SetData(data ? data.concat(await getUsers(offset)) : await getUsers(0))
+    
+    const changeOffset = () => {
+      setOffset(offset+usersPerPage)
     }
+    
+    async function getData() {
+      const users = await getUsers(offset, usersPerPage);
+      setData(data ? data.concat(users) : users);
+      }
 
     useEffect(() => {
-        getData()
-    },[])
+      getData()
+    },[offset])
 
     const renderItem = ({ item }: { item: Item }) => (
       <Item
