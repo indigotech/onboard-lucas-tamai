@@ -2,13 +2,13 @@ import { client } from "./ApolloClient";
 import { gql } from "@apollo/client";
 import { Alert, AsyncStorage } from "react-native";
 
-export async function getUsers(offset:number){ 
+export async function getUsers(offset:number,limit:number){ 
 
     const token = await AsyncStorage.getItem("token")
 
     const query =  gql`
         query getUsers{
-            Users(offset:${offset},limit: 10){
+            Users(offset:${offset},limit: ${limit}){
             nodes{
                 id,
                 name,
