@@ -28,18 +28,31 @@ function Item({id, name, email}) {
 
 
 export const UserListScreen = () => {
-
-    const [data,UseData] = React.useState<item[]>();
-    const [offset = 0,UseOffset] = React.useState();
+    const usersPerPage: number = 10
+    const [data, setData] = React.useState<item[]>();
+    const [offset, setOffset] = React.useState(0);
 
     
-    async function getData(){
-            UseData(await getUsers(offset))
+    const changeOffset = () => {
+      setOffset(offset+usersPerPage)
     }
+    
+    async function getData() {
+      const users = await getUsers(offset, usersPerPage);
+      setData(data ? data.concat(users) : users);
+      }
 
     useEffect(() => {
-        getData()
-    },[])
+      getData()
+    },[offset])
+
+    const renderItem = ({ item }: { item: Item }) => (
+      <Item
+          id={item.id}
+          name={item.name}
+          email={item.email}
+       />
+    );
 
   return (
       
@@ -47,14 +60,10 @@ export const UserListScreen = () => {
       <Text style={styles.Header}>User List:</Text>
       <FlatList
         data={data}
-        renderItem={({ item }) => (
-          <Item
-            id={item.id}
-            name={item.name}
-            email={item.email}
-          />
-        )}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
+        onEndReached={changeOffset}
+        onEndReachedThreshold={0.01}
       />
     </SafeAreaView>
   );
