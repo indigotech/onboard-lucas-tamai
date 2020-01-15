@@ -7,8 +7,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import {getUsers} from './getUsers'
+import { Navigation } from 'react-native-navigation'
 
 
 interface item{
@@ -40,11 +42,27 @@ export const UserListScreen = () => {
     async function getData() {
       const users = await getUsers(offset, usersPerPage);
       setData(data ? data.concat(users) : users);
-      }
-
+    }
+    
+    function changePage(){
+      Navigation.setRoot({root:  {
+        stack:{
+          id: "stackMain",
+            children:[
+            {
+              component: {
+                name: "NewUserScreen"
+              }
+            }]
+          }
+        }
+      })
+    }
+    
     useEffect(() => {
       getData()
     },[offset])
+
 
     const renderItem = ({ item }: { item: Item }) => (
       <Item
@@ -58,6 +76,12 @@ export const UserListScreen = () => {
       
     <SafeAreaView style={styles.container}>
       <Text style={styles.Header}>User List:</Text>
+      <TouchableOpacity 
+        style={styles.floatingButton}
+        onPress={changePage}
+        >
+        <Text style={styles.icon}>＋</Text>
+      </TouchableOpacity>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -85,6 +109,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 30    
  },
+  floatingButton:{
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    top: 20,
+    borderRadius: 100,
+    backgroundColor: '#C8D6C6'
+  },
+  icon:{
+    color: "white",
+    fontSize: 28
+  },
   container: {
     flex: 1,
   },

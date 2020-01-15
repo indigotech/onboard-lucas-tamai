@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native"
 import { doLogin } from "./LoginValidator"
 import { Navigation } from 'react-native-navigation'
-import {validateLogin} from './LocalUserValidator'
+import {validateEmail,validatePassword} from './LocalUserValidator'
 
 interface LoginPageState {
     email: string;
@@ -45,8 +45,8 @@ export default class LoginPage extends Component<{}, LoginPageState> {
                     onChangeText = {this.handlePassword}
                 />
                 <TouchableOpacity 
-                    style = {validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
-                    disabled = {!validateLogin(this.state.email, this.state.password)}
+                    style = {this.validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
+                    disabled = {!this.validateLogin(this.state.email, this.state.password)}
                     onPress = {this.handlePressButton}
                 >
                 <Text style={Styles.submitButtonText}>Entrar</Text>
@@ -76,6 +76,10 @@ export default class LoginPage extends Component<{}, LoginPageState> {
         }
         this.setState({ loading: false })
 
+    }
+
+    private validateLogin(email:string, password:string){
+        return(validateEmail(email) && validatePassword(password))
     }
 
     private changePage(){
