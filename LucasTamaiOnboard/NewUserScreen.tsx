@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Picker } from "react-native"
 import { Navigation } from 'react-native-navigation'
-import {validateEmail, validateCPF, validateBirth,validateName,validateRole} from './LocalUserValidator'
+import {validateEmail, validateCPF, validateBirth,validateName, validatePassword} from './LocalUserValidator'
+import {createUser} from './addUser'
 
 export const NewUserScreen = () => {
 
@@ -10,10 +11,13 @@ export const NewUserScreen = () => {
     const [CPF, setCPF] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [role,setRole] = React.useState("")
+    const [password,setPassword] = React.useState("")
+    const [loading, setLoading] = React.useState(false)
+
 
     function validateForm(){
         //TODO separar e tratar cada um individualmente
-        return(validateBirth(birth) && validateCPF(CPF) && validateEmail(email) && validateName(name))
+        return(validateBirth(birth) && validateCPF(CPF) && validateEmail(email) && validateName(name) && validatePassword(password))
     }
 
 
@@ -37,6 +41,29 @@ export const NewUserScreen = () => {
         setBirth(birth)
 
     }
+
+    const handlePassword = (password:string) => {
+        setPassword(password)
+    }
+
+    const handlePressButton = async () => {
+        setLoading(true)
+        try{
+            console.log(email+password+role+birth+name+CPF)
+            await createUser(email,password,role,birth,name,CPF)
+            changePage()
+        }
+        catch(error){
+            Alert.alert(error.message)
+        }
+        setLoading(false)
+
+    }
+
+    function changePage(){
+        Navigation.pop("stackMain")
+    }
+
     return(
         <View style={styles.container}>
             <Text style={styles.Header}>New User</Text>
@@ -70,8 +97,16 @@ export const NewUserScreen = () => {
                 autoCapitalize = "none"
                 onChangeText = {handleEmail}
             />
+            <Text style={styles.inputHeader}>Password:</Text>
+            <TextInput style={styles.input}
+                underlineColorAndroid = "transparent"
+                placeholder = "Password"
+                placeholderTextColor = "#9a73ef"
+                autoCapitalize = "none"
+                onChangeText = {handlePassword}
+            />
             <Text style={styles.inputHeader}>Role:</Text>
-           <Picker
+            <Picker
                 selectedValue={role}
                 onValueChange={handleRole}>
                 <Picker.Item label="User" value="user" />
@@ -79,7 +114,8 @@ export const NewUserScreen = () => {
             </Picker>
             <TouchableOpacity 
                 style={validateForm() ? styles.enabledSubmitButton : styles.disabledSubmitButton}
-                disabled={validateForm()}
+                disabled={!validateForm()}
+                onPress={handlePressButton}
                 >
                 <Text style={styles.submitButtonText}>Submit</Text>
             </TouchableOpacity>
