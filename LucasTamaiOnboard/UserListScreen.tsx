@@ -46,10 +46,11 @@ export const UserListScreen = () => {
     
     function changePage(){
       Navigation.push("stackMain",
-      {component:{
-        name: "NewUserScreen"
+        {component: {
+          name: "NewUserScreen"
+        }
       }
-    })
+      )
     }
     
     useEffect(() => {

@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 import { Navigation } from "react-native-navigation";
-import UserListScreen from "./UserListScreen";
 import {client} from "./ApolloClient";
 import { Alert, AsyncStorage } from "react-native";
 
