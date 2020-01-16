@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from "react-native"
+import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Picker } from "react-native"
 import { Navigation } from 'react-native-navigation'
 import {validateEmail, validateCPF, validateBirth,validateName,validateRole} from './LocalUserValidator'
 
@@ -7,8 +7,8 @@ export const NewUserScreen = () => {
 
     const [name,setName] = React.useState("")
     const [birth,setBirth] = React.useState()
-    const [CPF, setCPF] = React.useState()
-    const [email, setEmail] = React.useState()
+    const [CPF, setCPF] = React.useState("")
+    const [email, setEmail] = React.useState("")
     const [role,setRole] = React.useState("")
 
     function validateForm(){
@@ -71,13 +71,12 @@ export const NewUserScreen = () => {
                 onChangeText = {handleEmail}
             />
             <Text style={styles.inputHeader}>Role:</Text>
-            <TextInput style={styles.input}
-                underlineColorAndroid = "transparent"
-                placeholder = "Role"
-                placeholderTextColor = "#9a73ef"
-                autoCapitalize = "none"
-                onChangeText = {handleRole}
-            />
+           <Picker
+                selectedValue={role}
+                onValueChange={handleRole}>
+                <Picker.Item label="User" value="user" />
+                <Picker.Item label="Admin" value="admin" />
+            </Picker>
             <TouchableOpacity 
                 style={validateForm() ? styles.enabledSubmitButton : styles.disabledSubmitButton}
                 disabled={validateForm()}

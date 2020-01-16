@@ -45,8 +45,8 @@ export default class LoginPage extends Component<{}, LoginPageState> {
                     onChangeText = {this.handlePassword}
                 />
                 <TouchableOpacity 
-                    style = {this.validateLogin(this.state.email, this.state.password) ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
-                    disabled = {!this.validateLogin(this.state.email, this.state.password)}
+                    style = {this.validateLogin() ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
+                    disabled = {!this.validateLogin()}
                     onPress = {this.handlePressButton}
                 >
                 <Text style={Styles.submitButtonText}>Entrar</Text>
@@ -78,8 +78,8 @@ export default class LoginPage extends Component<{}, LoginPageState> {
 
     }
 
-    private validateLogin(email:string, password:string){
-        return(validateEmail(email) && validatePassword(password))
+    private validateLogin(){
+        return(validateEmail(this.state.email) && validatePassword(this.state.password))
     }
 
     private changePage(){

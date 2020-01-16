@@ -45,18 +45,11 @@ export const UserListScreen = () => {
     }
     
     function changePage(){
-      Navigation.setRoot({root:  {
-        stack:{
-          id: "stackMain",
-            children:[
-            {
-              component: {
-                name: "NewUserScreen"
-              }
-            }]
-          }
-        }
-      })
+      Navigation.push("stackMain",
+      {component:{
+        name: "NewUserScreen"
+      }
+    })
     }
     
     useEffect(() => {

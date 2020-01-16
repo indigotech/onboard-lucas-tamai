@@ -13,9 +13,7 @@ export function validateBirth(date:Date) {
     const today = new Date()
     const birth = new Date(date)
     const oldestDate = new Date("1910-01-01")
-    if ( birth <= today && birth >= oldestDate ){
-        return(true)
-    }
+    return( birth <= today && birth >= oldestDate )
 }
 
 export function validateCPF(CPF:string) {
@@ -24,7 +22,7 @@ export function validateCPF(CPF:string) {
 }
 
 export function validateName(name) {
-    return(name.length ? true : false)
+    return(!!name.length)
 }
 
 export function validateRole(role) {
