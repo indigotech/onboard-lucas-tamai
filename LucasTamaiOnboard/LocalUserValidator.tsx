@@ -24,7 +24,3 @@ export function validateCPF(CPF:string) {
 export function validateName(name) {
     return(!!name.length)
 }
-
-export function validateRole(role) {
-    return(role.length ? true : false)
-}

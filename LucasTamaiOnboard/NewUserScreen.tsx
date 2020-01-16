@@ -13,7 +13,7 @@ export const NewUserScreen = () => {
 
     function validateForm(){
         //TODO separar e tratar cada um individualmente
-        return(validateBirth(birth) && validateCPF(CPF) && validateEmail(email) && validateName(name) && validateRole(role))
+        return(validateBirth(birth) && validateCPF(CPF) && validateEmail(email) && validateName(name))
     }
 
 
