@@ -49,7 +49,6 @@ export const NewUserScreen = () => {
     const handlePressButton = async () => {
         setLoading(true)
         try{
-            console.log(email+password+role+birth+name+CPF)
             await createUser(email,password,role,birth,name,CPF)
             changePage()
         }
