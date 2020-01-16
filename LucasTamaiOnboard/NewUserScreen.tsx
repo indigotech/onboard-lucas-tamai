@@ -86,6 +86,7 @@ export const NewUserScreen = () => {
             <TextInput style={styles.input}
                 underlineColorAndroid = "transparent"
                 autoCapitalize = "none"
+                placeholder = "YYYY-MM-DD"
                 onChangeText = {handleBirth}
             />
             <Text style={styles.inputHeader}>Email:</Text>
@@ -107,7 +108,10 @@ export const NewUserScreen = () => {
             <Text style={styles.inputHeader}>Role:</Text>
             <Picker
                 selectedValue={role}
-                onValueChange={handleRole}>
+                onValueChange={handleRole}
+                style = {styles.picker}
+
+                >
                 <Picker.Item label="User" value="user" />
                 <Picker.Item label="Admin" value="admin" />
             </Picker>
@@ -127,13 +131,13 @@ export const NewUserScreen = () => {
 
 const styles = StyleSheet.create({ 
     container: {
-    paddingTop: 23,
+    paddingTop: 18,
  },
  Header:{
     fontWeight: "bold",
     fontSize: 20,
     textAlign: "center",
-    margin: 30    
+    margin: 20    
  },
  inputHeader:{
     fontSize: 12,
@@ -147,10 +151,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6
  },
+ picker:{
+    height: "auto"
+ },
  enabledSubmitButton: {
     backgroundColor: '#7a42f4',
     padding: 10,
-    marginTop: 40,
+    marginTop: 0,
     marginBottom: 15,
     marginHorizontal: 15,
     height: 40,    
@@ -159,7 +166,7 @@ const styles = StyleSheet.create({
  disabledSubmitButton:{
     backgroundColor: '#d3d3d3',
     padding: 10,
-    marginTop: 40,
+    marginTop: 0,
     marginBottom: 15,
     marginHorizontal: 15,
     height: 40,    

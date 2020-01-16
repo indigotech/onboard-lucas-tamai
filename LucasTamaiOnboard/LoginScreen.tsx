@@ -81,7 +81,7 @@ export default class LoginPage extends Component<{}, LoginPageState> {
     private validateLogin(){
         return(validateEmail(this.state.email) && validatePassword(this.state.password))
     }
-
+    
     private changePage(){
         Navigation.setRoot({root:  {
             stack:{

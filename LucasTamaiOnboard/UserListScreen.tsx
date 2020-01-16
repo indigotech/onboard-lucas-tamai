@@ -20,11 +20,27 @@ interface item{
 }
 
 function Item({id, name, email}) {
+
+  function changeToDetailsPage(){
+    Navigation.push("stackMain",
+      {component: {
+        name: "UserDetails",
+        passProps: {
+          id: id
+        }
+      }     
+    }
+    )
+  }
+
   return (
-      <View style={styles.row}>
+      <TouchableOpacity 
+        style={styles.row}
+        onPress={changeToDetailsPage}
+      >
         <Text style={styles.title}>{"Nome: "+ name}</Text>
         <Text style={styles.title}>{"Email: "+ email}</Text>
-      </View>
+      </TouchableOpacity>
   );
 }
 
@@ -44,7 +60,7 @@ export const UserListScreen = () => {
       setData(data ? data.concat(users) : users);
     }
     
-    function changePage(){
+    function changeToNewUserPage(){
       Navigation.push("stackMain",
         {component: {
           name: "NewUserScreen"
@@ -52,7 +68,7 @@ export const UserListScreen = () => {
       }
       )
     }
-    
+
     useEffect(() => {
       getData()
     },[offset])
@@ -72,7 +88,7 @@ export const UserListScreen = () => {
       <Text style={styles.Header}>User List:</Text>
       <TouchableOpacity 
         style={styles.floatingButton}
-        onPress={changePage}
+        onPress={changeToNewUserPage}
         >
         <Text style={styles.icon}>＋</Text>
       </TouchableOpacity>
