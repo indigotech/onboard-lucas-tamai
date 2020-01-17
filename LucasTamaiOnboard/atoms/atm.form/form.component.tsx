@@ -18,7 +18,7 @@ export const InputForm = (props:formProps) => {
                 placeholder = {props.placeholder}
                 onChangeText = {props.onChangeText}
                 autoCapitalize = "none"
-            ></InputBox>
+            />
         </>
 
     )
