@@ -4,6 +4,10 @@ import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity,
 import { doLogin } from "./LoginValidator"
 import { Navigation } from 'react-native-navigation'
 import {validateEmail,validatePassword} from './LocalUserValidator'
+import {SubmitButton} from './atoms/atm.buttons/submitButtonStyle'
+import { Header } from './atoms/h1';
+import { InputForm } from './atoms/atm.form/form.component';
+
 
 interface LoginPageState {
     email: string;
@@ -26,31 +30,25 @@ export default class LoginPage extends Component<{}, LoginPageState> {
     render(){
         return(
             <View style={Styles.container}>
-                <Text style={Styles.Header}> Bem vindo(a) à Taqtile </Text>
-                <Text style={Styles.inputHeader}>E-mail</Text>
-                <TextInput style={Styles.input}
-                    underlineColorAndroid = "transparent"
+                <Header> Bem vindo(a) à Taqtile </Header>
+                <InputForm
+                    title = "Email:"
+                    caption = ""
                     placeholder = "Email"
-                    placeholderTextColor = "#9a73ef"
-                    autoCapitalize = "none"
                     onChangeText = {this.handleEmail}
-
                 />
-                <Text style={Styles.inputHeader}>Senha</Text>
-                <TextInput style = {Styles.input}
-                    underlineColorAndroid = "transparent"
-                    placeholder = "Password"
-                    placeholderTextColor = "#9a73ef"
-                    autoCapitalize = "none"
+                <InputForm
+                    title = "Senha: "
+                    caption = ""
+                    placeholder = "senha"
                     onChangeText = {this.handlePassword}
                 />
-                <TouchableOpacity 
-                    style = {this.validateLogin() ? Styles.enabledSubmitButton : Styles.disabledSubmitButton}
+                <SubmitButton
                     disabled = {!this.validateLogin()}
                     onPress = {this.handlePressButton}
                 >
                 <Text style={Styles.submitButtonText}>Entrar</Text>
-                </TouchableOpacity>
+                </SubmitButton>
                 <ActivityIndicator color="#0000ff"
                     animating = {this.state.loading}/>
             </View>
@@ -81,7 +79,7 @@ export default class LoginPage extends Component<{}, LoginPageState> {
     private validateLogin(){
         return(validateEmail(this.state.email) && validatePassword(this.state.password))
     }
-
+    
     private changePage(){
         Navigation.setRoot({root:  {
             stack:{
