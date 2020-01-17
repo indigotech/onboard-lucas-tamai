@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import {getUsers} from './getUsers'
 import { Navigation } from 'react-native-navigation'
+import { Header } from './atoms/h1';
+import {FloatingButton} from './atoms/atm.buttons/floatingButton'
 
 
 interface item{
@@ -85,13 +87,12 @@ export const UserListScreen = () => {
   return (
       
     <SafeAreaView style={styles.container}>
-      <Text style={styles.Header}>User List:</Text>
-      <TouchableOpacity 
-        style={styles.floatingButton}
+      <Header>User List:</Header>
+      <FloatingButton
         onPress={changeToNewUserPage}
         >
         <Text style={styles.icon}>＋</Text>
-      </TouchableOpacity>
+      </FloatingButton>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -113,34 +114,12 @@ const styles = StyleSheet.create({
     shadowOpacity: .5,
     borderRadius: 4,
   },
-  Header:{
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: "center",
-    margin: 30    
- },
-  floatingButton:{
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    top: 20,
-    borderRadius: 100,
-    backgroundColor: '#C8D6C6'
-  },
   icon:{
     color: "white",
     fontSize: 28
   },
   container: {
     flex: 1,
-  },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
   },
   title: {
     fontSize: 18,

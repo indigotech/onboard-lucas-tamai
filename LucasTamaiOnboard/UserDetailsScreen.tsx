@@ -3,11 +3,12 @@ import { ActivityIndicator, StyleSheet, Text, View, TextInput, TouchableOpacity,
 import { Navigation } from 'react-native-navigation'
 import {validateEmail, validateCPF, validateBirth,validateName, validatePassword} from './LocalUserValidator'
 import {createUser} from './addUser'
-import { getUser } from './getUserDetails';
+import { getUser } from './getUsers';
+import { Header } from './atoms/h1';
 
 
 
-interface person{
+interface Person{
     birthDate:string,
     cpf:string,
     email:string,
@@ -17,7 +18,7 @@ interface person{
 
 export const UserDetails = (props) => {
 
-    const [user,setUser] = React.useState<person>()
+    const [user,setUser] = React.useState<Person>()
 
     async function getUserData() {
         const data = await getUser(props.id)
@@ -31,16 +32,16 @@ export const UserDetails = (props) => {
 
     return(
         <View>
-            <Text style={styles.Header}>User Details:</Text>
+            <Header>User Details</Header>
             {user &&
-            <>
-            <Text style={styles.title}>Name: {user.name}</Text>
-            <Text style={styles.title}>CPF: {user.cpf}</Text>
-            <Text style={styles.title}>Email: {user.email}</Text>
-            <Text style={styles.title}>Role: {user.role}</Text>
-            <Text style={styles.title}>Birth: {user.birthDate}</Text>
-            </>
-        }  
+                <>
+                    <Text style={styles.title}>Name: {user.name}</Text>
+                    <Text style={styles.title}>CPF: {user.cpf}</Text>
+                    <Text style={styles.title}>Email: {user.email}</Text>
+                    <Text style={styles.title}>Role: {user.role}</Text>
+                    <Text style={styles.title}>Birth: {user.birthDate}</Text>
+                </>
+            }  
         </View>
     )
 }
@@ -52,10 +53,4 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         marginHorizontal: 8,
       },
-      Header:{
-        fontWeight: "bold",
-        fontSize: 20,
-        textAlign: "center",
-        margin: 30    
-     },
     });
